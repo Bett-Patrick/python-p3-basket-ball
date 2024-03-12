@@ -182,3 +182,125 @@ def game_dict():
             ]
         }
     }
+
+
+#Solutions:
+game_data = game_dict()
+
+# function to return a player's number of points per game
+def num_points_per_game(player_name): 
+    for player in game_data["home"]["players"] + game_data["away"]["players"]:
+        if player["name"].lower() == player_name.lower():
+            return (f"{player['name']}'s points per game: {player['points_per_game']}")
+    return (f"{player_name} is not {game_data['home']['team_name']}'s or {game_data['away']['team_name']}'s player")
+
+                # Test cases:
+# from home team
+print(num_points_per_game("Jarrett Allen"))
+# from away team
+print(num_points_per_game("Rui Hachimura"))
+# from neither teams
+print(num_points_per_game("Patrick Bett"))
+
+
+# function to return player's age
+def player_age(player_name):
+    for player in game_data["home"]["players"] + game_data["away"]["players"]:
+        if player["name"].lower() == player_name.lower():
+            return (f"{player['name']}'s age: {player['age']}")
+    return (f"{player_name} is not {game_data['home']['team_name']}'s or {game_data['away']['team_name']}'s player")
+
+                # Test cases:
+# from home team
+print(player_age("Jarrett Allen"))
+# from away team
+print(player_age("Rui Hachimura"))
+# from neither teams
+print(player_age("Patrick Bett"))
+
+
+# function to return team's colors
+def team_colors(team_name):
+    for team in [game_data["home"], game_data["away"]]:
+        if team["team_name"].lower() == team_name.lower():
+            return f"{team['team_name']}'s colors:\n\t{(team['colors'])}"
+    return "Team not available"
+
+                # Test cases:
+# home team
+print(team_colors("Cleveland Cavaliers"))
+# away team
+print(team_colors("Washington Wizards"))
+# from neither teams
+print(team_colors("Patrick Bett"))
+
+#function to return a list of team names
+def team_names():
+    return [game_data["home"]["team_name"],game_data["away"]["team_name"]]
+
+# Test cases
+print(f"Home and Away teams:\n\t{team_names()}")
+
+#function to return a list of team jerseys
+
+def player_numbers(team_name):
+    teams = team_names()
+    team_jerseys = []
+    if team_name.lower() == teams[0].lower():
+        for player in game_data["home"]["players"]:
+            team_jerseys.append(player["number"])
+        return (f"Home team's jersey numbers:\n\t{team_jerseys}")
+    elif team_name.lower() == teams[1].lower():
+        for player in game_data["away"]["players"]:
+            team_jerseys.append(player["number"])
+        return (f"Away team's jersey numbers:\n\t{team_jerseys}")
+    else:
+        return "Team not available!!"
+
+            # Test cases
+# home team
+print(player_numbers("Cleveland Cavaliers"))
+# away team
+print(player_numbers("Washington Wizards"))
+# from neither teams
+print(player_numbers("Patrick Bett"))
+
+
+#function to display player's stats
+def player_stats(player_name):
+    for player in game_data["home"]["players"] + game_data["away"]["players"]:
+        if player["name"].lower() == player_name.lower():
+            return (f"{player['name']}'s stats:\n  {player}")
+
+# Test cases
+print(player_stats("Darius Garland"))
+
+
+# CHALLENGE
+# finding average number of rebounds for players who wear a particular shoe brand.
+
+# function to create a dictionary of rebounds per shoe brand
+def create_brand_dict(brand_name):
+    shoe_brand_rebounds = {}
+    for player in game_data["home"]["players"] + game_data["away"]["players"]:
+        if player["shoe_brand"] == brand_name:
+            rebounds = player["rebounds_per_game"]
+            if brand_name not in shoe_brand_rebounds:
+                shoe_brand_rebounds[brand_name] = []
+            shoe_brand_rebounds[brand_name].append(rebounds)
+    # shoe_brand_rebounds.clear()
+    # print(f"cleared:\n\t{shoe_brand_rebounds}")
+    return shoe_brand_rebounds
+
+print(create_brand_dict("Nike"))
+
+#function to calculate average rebounds by shoe brand
+def average_rebounds_by_shoe_brand(brand_name):
+    shoe_brand_rebounds = create_brand_dict(brand_name)
+    for brand, rebounds_list in shoe_brand_rebounds.items():
+        average_rebounds = sum(rebounds_list) / len(rebounds_list)
+        return(f"{brand}: {average_rebounds:.2f}")
+
+print(average_rebounds_by_shoe_brand("Nike"))
+print(average_rebounds_by_shoe_brand("Adidas"))
+
